@@ -1,7 +1,7 @@
 # Blockscript
 Visual programming environment built with Blockly that allows users to create JavaScript programs using blocks, with execution at node level and console output.
 
-<img width="1916" height="908" alt="image" src="https://github.com/user-attachments/assets/e6dc8614-a204-4dd8-8770-9a8cf1f23359" />
+<img width="1919" height="909" alt="image" src="https://github.com/user-attachments/assets/75eff6bc-2d2b-4f72-9309-4c459dbba799" />
 
 ## Features
 
