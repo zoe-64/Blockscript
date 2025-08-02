@@ -23,8 +23,8 @@
   "dependencies": {
     "blockly": "^12.2.0",
     "express": "^5.1.0",
-    "path": "^0.12.7",
-    "vm2": "^3.9.19"
+    "isolated-vm": "^6.0.1",
+    "path": "^0.12.7"
   },
   "devDependencies": {
     "@types/express": "^5.0.3",

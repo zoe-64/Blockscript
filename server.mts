@@ -3,8 +3,8 @@ import { createServer } from 'http';
 import path from 'path';
 import { PassThrough } from 'stream';
 import { fileURLToPath } from 'url';
-import { VM } from 'vm2';
-// Since __dirname is not available in ESM, reconstruct it
+import ivm from 'isolated-vm';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -12,7 +12,9 @@ const PORT = process.env.PORT || 3000;
 
 const app = express();
 const server = createServer(app);
+
 const clients = new Set<PassThrough>();
+let execution: ivm.Isolate | undefined;
 
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', 'localhost');
@@ -31,14 +33,12 @@ app.get('/api/console-stream', (req, res) => {
   });
   res.flushHeaders();
 
-  // Send initial keep-alive message
   res.write('event: connected\ndata: SSE ready\n\n');
 
   const clientId = Date.now();
   const clientStream = new PassThrough();
   clients.add(clientStream);
 
-  // Forward stream to client
   clientStream.pipe(res);
 
   req.on('close', () => {
@@ -54,41 +54,48 @@ setInterval(() => {
   });
 }, 2000);
 
-// Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
-app.post('/api/run-code', (req, res) => {
+app.post('/api/run-code', async (req, res) => {
   const { code } = req.body;
-  try {
-    // Create a custom console that broadcasts logs
-    const broadcastLog = (type: 'log' | 'error', ...args: any[]) => {
-      const message = args.join(' ');
-      clients.forEach(stream => {
-        stream.write(`event: ${type}\ndata: ${JSON.stringify(message)}\n\n`);
-      });
-    };
 
-    const customConsole = {
-      log: (...args: any[]) => broadcastLog('log', ...args),
-      error: (...args: any[]) => broadcastLog('error', ...args),
-    };
-
-    const vm = new VM({
-      timeout: 5000,
-      sandbox: { console: customConsole },
+ const broadcastRef = new ivm.Reference((type: string, message: string) => {
+    clients.forEach(stream => {
+      stream.write(`event: ${type}\ndata: ${JSON.stringify(message)}\n\n`);
     });
+  });
 
-    vm.run(code); // Runs asynchronously
+  if (execution) {
+      execution.dispose();
+      execution = undefined;
+  }
+  execution = new ivm.Isolate({ memoryLimit: 256 });
+  try {
+    const context = execution.createContextSync();
+    await context.global.set('__broadcast', broadcastRef);
+    await context.eval(`
+      console = {
+        log: (...args) => __broadcast.applyIgnored(undefined, ['log', args.join(' ')]),
+        warn: (...args) => __broadcast.applyIgnored(undefined, ['warn', args.join(' ')]),
+        error: (...args) => __broadcast.applyIgnored(undefined, ['error', args.join(' ')])
+      };
+    `);
+
+    const wrappedCode = `
+        (async function() {
+        ${code}
+        })();
+    `;
+
+    await context.eval(wrappedCode, { timeout: 5000 });
 
     res.status(200).json({ success: true });
-
   } catch (e: any) {
     res.status(500).json({ success: false, error: e.message });
   }
 });
 
-// Start server
 server.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });

@@ -14,14 +14,23 @@ eventSource.addEventListener('connected', (e) => {
 });
 
 eventSource.addEventListener('log', (e: any) => {
-  output.innerHTML += `<p class="log">${e.data}</p>`;
+  const p = document.createElement('p');
+  p.className = 'log';
+  p.textContent = e.data;
+  output.appendChild(p);
 });
 eventSource.addEventListener('warn', (e: any) => {
-  output.innerHTML += `<p class="warn">${e.data}</p>`;
+  const p = document.createElement('p');
+  p.className = 'warn';
+  p.textContent = e.data; 
+  output.appendChild(p);
 });
 
 eventSource.addEventListener('error', (e: any) => {
-  output.innerHTML += `<p class="error">${e.data}</p>`;
+  const p = document.createElement('p');
+  p.className = 'error';
+  p.textContent = e.data;
+  output.appendChild(p);
 });
 
 
@@ -34,7 +43,7 @@ async function runCode(code: string) {
 }
 eventSource.onerror = (e) => {
   console.error('SSE error:', e);
-  // Reconnect logic (exponential backoff recommended)
+
   setTimeout(() => {
     eventSource.close();
     eventSource = new EventSource('http://localhost:3000/api/console-stream');
