@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+       "target": "ES6",
+    "module": "ESNext",  // or "ESNext" (adjust based on your needs)
+    "rootDir": "./src",  
+     "outDir": "./public/js", // compiled JS output
+    "esModuleInterop": true,
+    "strict": true,
+    "moduleResolution": "node"
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules"]
+}
