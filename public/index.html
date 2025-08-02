@@ -3,10 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <title>Blockly + TypeScript</title>
+  <script src="https://unpkg.com/blockly/blockly.min.js"></script>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-  <div id="blocklyDiv"></div>
-  <script type="module" src="/js/main.js"></script>  <!-- Compiled TS -->
+    <div class="grid">
+
+    <div id="blocklyDiv"></div>
+    <button id="saveWorkspace">Save Workspace</button>
+    <button id="loadWorkspace">Load Workspace</button>
+    <div id="output"></div>
+    </div>
+    <script type="module" src="/js/main.js"></script>  <!-- Compiled TS -->
 </body>
 </html>

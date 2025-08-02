@@ -5,7 +5,7 @@
   "main": "server.ts",
   "scripts": {
     "start:client": "esbuild src/main.ts --bundle --outfile=public/js/main.js --watch",
-    "start:server": "node --loader ts-node/esm server.ts",
+    "start:server": "node --loader ts-node/esm server.mts",
     "dev": "concurrently -n \"SERVER,CLIENT\" -c \"bgCyan.bold,bgGreen.bold\" \"npm run start:server\" \"npm run start:client\""
   },
   "repository": {
@@ -21,18 +21,16 @@
   },
   "homepage": "https://github.com/zoe-64/Blockscript#readme",
   "dependencies": {
-    "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
     "blockly": "^12.2.0",
     "express": "^5.1.0",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "vm2": "^3.9.19"
   },
   "devDependencies": {
-    "@blockly/dev-tools": "^9.0.2",
     "@types/express": "^5.0.3",
     "@types/node": "^24.1.0",
     "concurrently": "^9.2.0",
     "esbuild": "^0.25.8",
-    "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",
     "tsc": "^2.0.4",
     "typescript": "^5.9.2"
