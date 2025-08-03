@@ -4,8 +4,8 @@
   "description": "",
   "main": "server.ts",
   "scripts": {
-    "start:client": "esbuild src/main.ts --bundle --outfile=public/js/main.js --watch",
-    "start:server": "node --loader ts-node/esm server.mts",
+    "start:client": "esbuild src/client/main.ts --bundle --outfile=public/js/main.js --watch",
+    "start:server": "node --loader ts-node/esm src/server/server.mts",
     "dev": "concurrently -n \"SERVER,CLIENT\" -c \"bgCyan.bold,bgGreen.bold\" \"npm run start:server\" \"npm run start:client\""
   },
   "repository": {
@@ -21,6 +21,8 @@
   },
   "homepage": "https://github.com/zoe-64/Blockscript#readme",
   "dependencies": {
+    "@blockly/shadow-block-converter": "^7.0.3",
+    "bc-bot": "^0.0.3",
     "blockly": "^12.2.0",
     "express": "^5.1.0",
     "isolated-vm": "^6.0.1",

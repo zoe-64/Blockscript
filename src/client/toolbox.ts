@@ -3,6 +3,138 @@ export default {
   contents: [
     {
       kind: 'category',
+      name: 'Bot',
+      categorystyle: 'bot_category',
+      contents: [
+        {
+          type: 'start_bot',
+          kind: 'block',
+           inputs: {
+            username: {
+              shadow: {
+                type: 'text',
+                fields: {
+                  TEXT: 'username',
+                },
+              },
+            },
+            password: {
+              shadow: {
+                type: 'text',
+                fields: {
+                  TEXT: 'password',
+                },
+              },
+            }
+          },
+        },
+        {
+          type: 'room_config',
+          kind: 'block',
+          inputs: {
+            name: {
+              shadow: {
+                type: 'text',
+                fields: {
+                  TEXT: 'room name',
+                },
+              },
+            },
+            description: {
+              shadow: {
+                type: 'text',
+                fields: {
+                  TEXT: 'room description',
+                },
+              },
+            },
+            background: {
+              shadow: {
+                type: 'text',
+                fields: {
+                  TEXT: 'background',
+                },
+              },
+            },
+            private: {
+              shadow: {
+                type: 'logic_boolean',
+                fields: {
+                  BOOL: 'FALSE',
+                },
+              },
+            },
+            locked: {
+              shadow: {
+                type: 'logic_boolean',
+                fields: {
+                  BOOL: 'FALSE',
+                },
+              },
+            },
+             space: {
+              shadow: {
+                type: 'space_enum',
+                fields: {
+                  space: 'X',
+                },
+              },
+            }, 
+            limit: {
+              shadow: {
+                type: 'math_number',
+                fields: {
+                  NUM: 20,
+                },
+              },
+            },
+            game: {
+              shadow: {
+                type: 'room_game_enum',
+                fields: {
+                  room_game: ''
+                },
+              },
+            },
+            language: {
+              shadow: {
+                type: 'language_enum',
+                fields: {
+                  language: 'EN',
+                },
+              },
+            }, 
+         /*    map_data: {
+              shadow: {
+                type: 'map_data',
+                fields: {
+                  MAP_DATA: 'map_data',
+                },
+              },
+            } */
+          },
+        },
+        {
+          type: 'space_enum',
+          kind: 'block',
+        },
+        {
+          type: 'language_enum',
+          kind: 'block',
+        },
+        {
+          type: 'room_game_enum',
+          kind: 'block',
+        },
+        {
+          type: 'block_category_enum',
+          kind: 'block',
+        }
+      ],
+     
+    },
+    {
+      kind: 'category',
       name: 'Logic',
       categorystyle: 'logic_category',
       contents: [
@@ -621,10 +753,6 @@ export default {
       name: 'Lists',
       categorystyle: 'list_category',
       contents: [
-        {
-          type: 'lists_create_with',
-          kind: 'block',
-        },
         {
           type: 'lists_create_with',
           kind: 'block',

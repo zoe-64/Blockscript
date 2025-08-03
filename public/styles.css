@@ -68,13 +68,16 @@ p {
 }
 .log {
   color: rgb(0, 0, 0);
+  text-wrap: wrap;
 }
 
 .warn {
   color: rgb(255, 177, 33);
+  text-wrap: wrap;
 }
 
 .error {
   color: rgb(255, 76, 76);
   background-color: #ff919149;
+  text-wrap: wrap;
 }
